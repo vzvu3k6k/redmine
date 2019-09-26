@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  redmine:
+    image: circleci/ruby:2.6.4-buster-node-browsers
+    volumes:
+      - .:/data/redmine
+    working_dir: /data/redmine
+    depends_on:
+      - mysql
+    environment:
+      - BUNDLE_PATH=/data/redmine/vendor/bundle
+    user: "${UID}:${GID}"
+    tty: true
+    stdin_open: true
+  mysql:
+    image: circleci/mysql:5.7-ram
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: redmine_test
+    shm_size: 256m
