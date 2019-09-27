@@ -16,18 +16,21 @@ jobs:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - run: export DB=$db
-      env:
-        db: ${{ matrix.DB }}
     - name: Build a redmine image
       run: docker-compose build redmine
+      env: { db: ${{ matrix.DB }} }
     - name: Install dependencies
       run: docker-compose run --rm redmine bundle install --jobs 4 --retry 3
+      env: { db: ${{ matrix.DB }} }
     - name: Run migrations
       run: docker-compose run --rm redmine bin/rails db:migrate RAILS_ENV=test
+      env: { db: ${{ matrix.DB }} }
     - name: Prepare test repositories
       run: docker-compose run --rm redmine bin/rails test:scm:setup:all
+      env: { db: ${{ matrix.DB }} }
     - name: Run test
       run: docker-compose run --rm redmine bin/rails test
+      env: { db: ${{ matrix.DB }} }
     - name: Run test:system
       run: docker-compose run --rm redmine bin/rails test:system
+      env: { db: ${{ matrix.DB }} }
