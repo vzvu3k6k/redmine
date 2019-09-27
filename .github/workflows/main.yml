@@ -22,12 +22,12 @@ jobs:
     - name: Build a redmine image
       run: docker-compose build redmine
     - name: Install dependencies
-      run: docker-compose run --rm redmine bundle install --jobs 4 --retry 3
+      run: docker-compose run -e DB=${DB} --rm redmine bundle install --jobs 4 --retry 3
     - name: Run migrations
-      run: docker-compose run --rm redmine bin/rails db:migrate RAILS_ENV=test
+      run: docker-compose run -e DB=${DB} --rm redmine bin/rails db:migrate RAILS_ENV=test
     - name: Prepare test repositories
-      run: docker-compose run --rm redmine bin/rails test:scm:setup:all
+      run: docker-compose run -e DB=${DB} --rm redmine bin/rails test:scm:setup:all
     - name: Run test
-      run: docker-compose run --rm redmine bin/rails test
+      run: docker-compose run -e DB=${DB} --rm redmine bin/rails test
     - name: Run test:system
-      run: docker-compose run --rm redmine bin/rails test:system
+      run: docker-compose run -e DB=${DB} --rm redmine bin/rails test:system
