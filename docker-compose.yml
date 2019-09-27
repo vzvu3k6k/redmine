@@ -7,7 +7,7 @@ services:
       - .:/data/redmine
     working_dir: /data/redmine
     depends_on:
-      - mysql
+      - ${DB}
     environment:
       - BUNDLE_PATH=/data/redmine/vendor/bundle
     user: "${UID}:${GID}"
@@ -19,3 +19,7 @@ services:
     environment:
       MYSQL_DATABASE: redmine_test
     shm_size: 256m
+  postgres:
+    image: circleci/postgres:11-alpine-ram
+    environment:
+      POSTGRES_DB: redmine_test

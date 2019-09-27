@@ -7,11 +7,18 @@ jobs:
   build:
  
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        DB: [mysql, postgres]
  
     steps:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
+    - run: export DB=$db
+      env:
+        db: ${{ matrix.DB }}
     - name: Build a redmine image
       run: docker-compose build redmine
     - name: Install dependencies

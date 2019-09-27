@@ -1,7 +1,17 @@
-test:
+mysql: &mysql
   adapter: mysql2
   database: redmine_test
   host: mysql
   username: root
   password: ""
   encoding: utf8
+
+postgres: &postgres
+  adapter: postgresql
+  database: redmine_test
+  host: postgres
+  username: postgres
+  password: ""
+
+test:
+  <<: *<%= ENV.fetch('DB') %>
